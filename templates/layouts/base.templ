@@ -1,31 +1,38 @@
 package layouts
 
 templ Base(title string) {
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{ title } | Gin Templ App</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-    </head>
-    <body>
-        <nav class="container-fluid">
-            <ul>
-                <li><strong>Auth App in Go</strong></li>
-            </ul>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/login">Login</a></li>
-            </ul>
-        </nav>
-        
-        <main class="container">
-            { children... }
-        </main>
-        
-        
-        
-    </body>
-    </html>
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title } | Gin Templ App</title>
+			<link
+				rel="stylesheet"
+				href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.violet.min.css"
+			/>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet"/>
+		</head>
+		<style>
+            * {
+                font-family: 'Bricolage Grotesque', sans-serif;
+            }
+        </style>
+		<body>
+			<nav class="container-fluid">
+				<ul>
+					<li><strong>Auth App in Go</strong></li>
+				</ul>
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/login">Login</a></li>
+				</ul>
+			</nav>
+			<main class="container">
+				{ children... }
+			</main>
+		</body>
+	</html>
 }

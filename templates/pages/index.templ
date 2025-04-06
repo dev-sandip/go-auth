@@ -3,17 +3,10 @@ package pages
 import "github.com/dev-sandip/go-auth/templates/layouts"
 
 templ Index() {
-    @layouts.Base("Home") {
-        
-      <h1>Welcome to the Auth App</h1>
-      <p>This is a simple authentication application built with Go and Gin.</p>
-      <p>Use the buttons below to navigate to the login or registration page.</p>
-      <p>Feel free to explore the code and customize it to your needs.</p>
-      <p>Happy coding!</p>  
-   <section>
-  <button>Login</button>
-  <button>Register</button>
-   
-   </section>
-    }
+	@layouts.Base("Home") {
+		<div class="container">
+			<button>Login</button>
+			<button>Register</button>
+		</div>
+	}
 }

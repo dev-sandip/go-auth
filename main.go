@@ -1,14 +1,17 @@
 package main
 
 import (
-	"context"
+	"fmt"
 	"log"
-	"net/http"
 
+	"github.com/a-h/templ"
 	"github.com/dev-sandip/go-auth/templates/pages"
 	"github.com/gin-gonic/gin"
 )
 
+func render(c *gin.Context, status int, template templ.Component) error {
+	return template.Render(c.Request.Context(), c.Writer)
+}
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
@@ -17,25 +20,29 @@ func main() {
 
 	router.GET("/", func(c *gin.Context) {
 		component := pages.Index()
-		component.Render(context.Background(), c.Writer)
+		render(c, 200, component)
 	})
 
 	router.GET("/login", func(c *gin.Context) {
 		component := pages.Login()
-		component.Render(context.Background(), c.Writer)
+		render(c, 200, component)
 	})
-
+	router.GET("/register", func(c *gin.Context) {
+		component := pages.Register()
+		render(c, 200, component)
+	})
 	router.POST("/login", func(c *gin.Context) {
 		email := c.PostForm("email")
 		password := c.PostForm("password")
 
 		if email != "" && password != "" {
-			c.Redirect(http.StatusSeeOther, "/")
+			fmt.Println("Login successful", email, password)
+			c.Redirect(302, "/")
 			return
 		}
 
 		component := pages.Login()
-		component.Render(context.Background(), c.Writer)
+		render(c, 200, component)
 	})
 
 	log.Println("Server starting on :8080...")
