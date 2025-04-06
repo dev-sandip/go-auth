@@ -3,12 +3,27 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/dev-sandip/go-auth/templates/pages"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// env loading
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("❌ Error loading .env file")
+	}
+	mongoURI := os.Getenv("MONGO_URI")
+
+	fmt.Println("Mongo URI", mongoURI)
+	client, err := ConnectMongo(mongoURI)
+	if err != nil {
+		log.Fatal("❌ Error connecting to MongoDB", err)
+	}
+	defer DisconnectMongo(client)
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
