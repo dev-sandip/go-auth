@@ -1,23 +1,21 @@
-.PHONY: dev build clean generate run
+APP_NAME = app
+CMD_DIR = cmd/app
+BIN_DIR = bin
 
-# Development with live reload
-dev:
-	air
+build:
+	@echo "🔧 Building $(APP_NAME)..."
+	go build -o $(BIN_DIR)/$(APP_NAME) ./$(CMD_DIR)
 
-# Generate templ files
+run: build
+	@echo "🚀 Running $(APP_NAME)..."
+	./$(BIN_DIR)/$(APP_NAME)
+
 generate:
 	templ generate
 
-# Build the application
-build: generate
-	go build -o ./bin/app .
+dev:
+	air
 
-# Run without live reload
-run: generate
-	go run .
-
-
-# Clean temporary files
 clean:
-	rm -rf tmp/
-	rm -rf bin/
+	@echo "🧹 Cleaning up..."
+	rm -rf $(BIN_DIR)
