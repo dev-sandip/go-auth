@@ -4,33 +4,21 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/a-h/templ"
 	"github.com/dev-sandip/go-auth/templates/pages"
 	"github.com/gin-gonic/gin"
 )
 
-func render(c *gin.Context, status int, template templ.Component) error {
-	return template.Render(c.Request.Context(), c.Writer)
-}
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	router.Static("/static", "./static")
+	// -----Views Routes-----
+	router.GET("/", RenderHomePage)
+	router.GET("/login", RenderLoginPage)
+	router.GET("/register", RenderRegisterPage)
 
-	router.GET("/", func(c *gin.Context) {
-		component := pages.Index()
-		render(c, 200, component)
-	})
-
-	router.GET("/login", func(c *gin.Context) {
-		component := pages.Login()
-		render(c, 200, component)
-	})
-	router.GET("/register", func(c *gin.Context) {
-		component := pages.Register()
-		render(c, 200, component)
-	})
+	// -----API Routes-----
 	router.POST("/login", func(c *gin.Context) {
 		email := c.PostForm("email")
 		password := c.PostForm("password")
