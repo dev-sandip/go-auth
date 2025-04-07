@@ -1,0 +1,13 @@
+package pages
+
+import "github.com/dev-sandip/go-auth/templates/layouts"
+import "github.com/dev-sandip/go-auth/templates/components"
+
+templ Home() {
+	@layouts.Base("Home") {
+		<div class="container">
+			<h2>Here We will gonna render markdown</h2>
+			@components.Markdown("# Markdown Content\n\nThis is a sample markdown content.\n\n- Item 1\n- Item 2\n- Item 3 \n```golang\npackage main\nimport \"fmt\"\nfunc main() {\n\tfmt.Println(\"Hello, World!\")\n}\n```")
+		</div>
+	}
+}

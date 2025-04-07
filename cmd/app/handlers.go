@@ -23,3 +23,7 @@ func RenderHomePage(c *gin.Context) {
 	component := pages.Index()
 	render(c, 200, component)
 }
+func RenderIndexPage(c *gin.Context) {
+	component := pages.Home()
+	render(c, 200, component)
+}

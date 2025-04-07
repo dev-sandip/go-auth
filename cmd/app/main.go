@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/dev-sandip/go-auth/cmd/db"
+	model "github.com/dev-sandip/go-auth/cmd/models"
 	"github.com/dev-sandip/go-auth/templates/pages"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -24,6 +26,7 @@ func main() {
 		log.Fatal("❌ Error connecting to MongoDB", err)
 	}
 	defer DisconnectMongo(client)
+	db.InitMongoCollections(client)
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
@@ -32,6 +35,7 @@ func main() {
 	router.GET("/", RenderHomePage)
 	router.GET("/login", RenderLoginPage)
 	router.GET("/register", RenderRegisterPage)
+	router.GET("/home", RenderIndexPage)
 
 	// -----API Routes-----
 	router.POST("/login", func(c *gin.Context) {
@@ -46,6 +50,31 @@ func main() {
 
 		component := pages.Login()
 		render(c, 200, component)
+	})
+	router.POST("/register", func(c *gin.Context) {
+		var user model.User
+
+		// First, bind the JSON body to the user struct
+		if err := c.ShouldBindJSON(&user); err != nil {
+			c.JSON(400, gin.H{"error": "Invalid JSON input"})
+			return
+		}
+
+		// Validate required fields
+		if user.Name == "" || user.Email == "" || user.Password == "" {
+			c.JSON(400, gin.H{"error": "All fields (name, email, password) are required"})
+			return
+		}
+
+		// Insert user into the DB
+		_, err = db.CreateUser(&user)
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Failed to create user"})
+			return
+		}
+
+		// Respond with success
+		c.JSON(201, gin.H{"message": "User registered successfully"})
 	})
 
 	log.Println("Server starting on :8080...")
