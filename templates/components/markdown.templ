@@ -3,7 +3,11 @@ package components
 import "github.com/dev-sandip/go-auth/cmd/utils"
 
 templ Markdown(children string) {
-	<div class="markdown-content">
-		@templ.Raw(string(utils.MarkdownToHTML([]byte(children))))
-	</div>
+	if html, err := utils.MarkdownToHTML([]byte(children)); err == nil {
+		<div class="markdown-content">
+			@templ.Raw(string(html))
+		</div>
+	} else {
+		<div class="markdown-error">Error rendering markdown: { err.Error() }</div>
+	}
 }

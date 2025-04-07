@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/alecthomas/chroma/formatters/html"
+	"github.com/alecthomas/chroma/styles"
 	"github.com/dev-sandip/go-auth/cmd/db"
 	model "github.com/dev-sandip/go-auth/cmd/models"
 	"github.com/dev-sandip/go-auth/templates/pages"
@@ -36,7 +38,15 @@ func main() {
 	router.GET("/login", RenderLoginPage)
 	router.GET("/register", RenderRegisterPage)
 	router.GET("/home", RenderIndexPage)
+	// markdown style serving
+	router.GET("/css/syntax-highlighting.css", func(c *gin.Context) {
+		c.Header("Content-Type", "text/css")
+		style := styles.Get("dracula")
+		formatter := html.New(html.WithLineNumbers(true))
+		formatter.WriteCSS(c.Writer, style)
+	})
 
+	// Serve static files
 	// -----API Routes-----
 	router.POST("/login", func(c *gin.Context) {
 		email := c.PostForm("email")
