@@ -27,3 +27,7 @@ func RenderIndexPage(c *gin.Context) {
 	component := pages.Home()
 	render(c, 200, component)
 }
+func RenderEditorPage(c *gin.Context) {
+	component := pages.Editor()
+	render(c, 200, component)
+}

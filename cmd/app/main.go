@@ -32,12 +32,14 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
-	router.Static("/static", "./static")
+	router.Static("/assets", "./cmd/assets")
+
 	// -----Views Routes-----
 	router.GET("/", RenderHomePage)
 	router.GET("/login", RenderLoginPage)
 	router.GET("/register", RenderRegisterPage)
 	router.GET("/home", RenderIndexPage)
+	router.GET("/editor", RenderEditorPage)
 	// markdown style serving
 	router.GET("/css/syntax-highlighting.css", func(c *gin.Context) {
 		c.Header("Content-Type", "text/css")
@@ -45,8 +47,6 @@ func main() {
 		formatter := html.New(html.WithLineNumbers(true))
 		formatter.WriteCSS(c.Writer, style)
 	})
-
-	// Serve static files
 	// -----API Routes-----
 	router.POST("/login", func(c *gin.Context) {
 		email := c.PostForm("email")
